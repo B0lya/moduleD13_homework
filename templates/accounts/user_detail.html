@@ -1,0 +1,20 @@
+{% extends 'default.html' %}
+
+{% block title %}
+  Profile
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ user.username }}</h1>
+    <div class="user-detail__form">
+      <p>First name:</p>
+      <p>{{ user.first_name }}</p>
+      <p>Last name:</p>
+      <p>{{ user.last_name }}</p>
+      <p>Email:</p>
+      <p>{{ user.email }}</p>
+      <p>Joined on:</p>
+      <p>{{ user.date_joined }}</p>
+    </div>
+    <button><a href="{% url 'user_edit' %}">Edit profile</a></button>
+{% endblock content %}

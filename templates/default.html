@@ -1,0 +1,28 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/generic.css' %}">
+  <link rel="stylesheet" href="{% static 'css/billboard.css' %}">
+  <title>Billboard — {% block title %}{% endblock title %}</title>
+</head>
+<body>
+  <aside>
+    <ul>
+      <li><a href="/">Все объявления ({{ all_ads | length }})</a></li>
+      <li><a href="{% url 'my_ads' %}">Мои объявления ({{ user_ads | length }})</a></li>
+      <li><a href="{% url 'offers' %}">Мои предложения ({{ user_offers | length }})</a></li>
+      <li><a href="{% url 'user_detail' %}">Мой профайл ({{ request.user.username }})</a></li>
+      <li><a href="{% url 'account_logout' %}">Выйти</a></li>
+    </ul>
+  </aside>
+  <main>
+    {% block content %}
+    {% endblock content %}
+  </main>
+</body>
+</html>

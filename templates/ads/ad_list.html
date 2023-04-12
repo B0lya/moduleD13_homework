@@ -1,0 +1,69 @@
+{% extends 'default.html' %}
+
+{% load static %}
+
+{% block title %}
+  Ads
+{% endblock title %}
+
+{% block content %}
+  <div class="main__ads-wrapper">
+    {% for ad in ads %}
+      <div class="main__ads-wrapper_card">
+        <a href="{% url 'ad_detail' ad.id %}">
+          <h2>{{ ad.title }}</h2>
+          <p class="main__ads-wrapper_card_author">
+            by {{ ad.author }}
+            {% if ad.author == request.user %}
+             (You)
+            {% endif %}
+          </p>
+          <p class="main__ads-wrapper_card_content">{{ ad.content | truncatewords:50 }}</p>
+          <p class="main__ads-wrapper_card_time">{{ ad.posted }}</p>
+            <div class="main__ads-wrapper_card_icons">
+              <p class="main__ads-wrapper_card_icons_category">{{ ad.get_category_display }}</p>
+              {% if ad.image1 or ad.image2 or ad.image3 %}
+                <img class="main__ads-wrapper_card_icons_photo" src="{% static 'img/photo.png' %}" alt="" width=15 height=15>
+              {% endif %}
+              {% if ad.video %}
+                <img class="main__ads-wrapper_card_icons_video" src="{% static 'img/video.png' %}" alt="" width=15 height=15>
+              {% endif %}
+            </div>
+          {% if ad.author == request.user %}
+            <div class="main__ads-wrapper_card_controls">
+              <a href="{% url 'ad_edit' ad.id %}"><img src="{% static 'img/edit.png' %}" alt="Edit ad" width=15 height=15></a>
+              <a href="{% url 'ad_delete' ad.id %}"><img src="{% static 'img/delete.png' %}" alt="Delete ad" widht=15 height=15></a>
+            </div>
+          {% endif %}
+        </a>
+      </div>
+    {% empty %}
+      <h2>No ads!</h2>
+    {% endfor %}
+
+    <a href="{% url 'ad_create' %}" class="main__ads-wrapper_new-ad"></a>
+  </div>
+  {% if is_paginated %}
+      <nav>
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li><a href="?page=1">First</a></li>
+            <li><a href="?page={{ page_obj.previous_page_number }}"><<<</a></li>
+          {% endif %}
+
+          {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+              <li class="pagination_active">{{ num }}</li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:3 %}
+              <li><a href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}">>>></a></li>
+            <li><a href="?page={{ page_obj.paginator.num_pages }}">Last</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+{% endblock content %}

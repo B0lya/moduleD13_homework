@@ -1,0 +1,28 @@
+{% extends 'default.html' %}
+
+{% block title %}
+  Create an ad
+{% endblock title %}
+
+{% block content %}
+  <h1>Create an ad</h1>
+  <form class="ad_create__form" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% for hidden in form.hidden_fields %}
+      {{ hidden }}
+    {% endfor %}
+
+    {% for field in form.visible_fields %}
+      {{ field.errors }}
+      {{ field.label_tag }}
+      {% if field.label == 'Image1' or field.label == 'Image2' or field.label == 'Image3' or field.label == 'Video' %}
+        <div class="media_column">{{ field }}</div>
+      {% else %}
+        {{ field }}
+      {% endif %}
+    {% endfor %}  
+    
+    <input type="submit" value="Post">
+  </form>
+{% endblock content %}
